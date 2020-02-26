@@ -1,6 +1,7 @@
 package ad.service
 
 import ad.constantData.CassandraData
+import ad.constantData.Time
 import ad.entity.cassandraEntity.DailyAdAggregate
 import ad.entity.cassandraEntity.WeekAggregate
 import com.datastax.driver.core.querybuilder.QueryBuilder
@@ -15,7 +16,7 @@ class RedisService(private val cassandraTemplate: CassandraTemplate,
                    private val redisTemplate: RedisTemplate<String, Double>) {
 
 
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRate = Time.REDIS_UPDATE)
     fun setCTRs() {
         val stamp = Timestamp(System.currentTimeMillis())
         val day = stamp.toLocalDateTime().dayOfYear

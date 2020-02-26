@@ -29,7 +29,8 @@ object Time {
     const val TIME_RECHECK_WRONG_CLICKS = 10 * 60 * 1000L// why ? :O
     const val DELAY_TIME_RECHECK_WRONG_CLICKS = 10 * 1000L // why ? :O
     const val POLL_DURATION = 100L
+    const val REDIS_UPDATE = 10000L
     const val VALID_TIME_TO_RECHECK_CLICK = 5 * 60 * 1000L
-    const val WEEK_AGGREGATE_CRON = "0 43 20 * * *"
+    const val WEEK_AGGREGATE_CRON = "0 22 22 * * *"
 
 }
