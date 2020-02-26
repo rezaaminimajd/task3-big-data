@@ -16,7 +16,7 @@ class KafkaProducerConfig {
     @Bean
     fun producerFactory(): ProducerFactory<String, String> {
         val configProps: MutableMap<String, Any> = HashMap()
-        configProps[ProducerConfig.BOOTSTRAP_SERVERS_CONFIG] = KafkaData.BOOTSTRAP_SERVERS_CONFIG
+        configProps[ProducerConfig.BOOTSTRAP_SERVERS_CONFIG] = KafkaData.BOOTSTRAP_SERVERS
         configProps[ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG] = StringSerializer::class.java
         configProps[ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG] = StringSerializer::class.java
         return DefaultKafkaProducerFactory(configProps)

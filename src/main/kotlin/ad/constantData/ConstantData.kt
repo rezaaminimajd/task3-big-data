@@ -15,9 +15,11 @@ object CassandraData {
 }
 
 object KafkaData {
-    const val BOOTSTRAP_SERVERS_CONFIG = "localhost:9092"
-    const val GROUP_ID_CONFIG = "adEvent"
+    const val BOOTSTRAP_SERVERS = "localhost:9092"
+    const val REQUEST_GROUP_ID = "adEvent"
+    const val WRONG_CLICK_GROUP_ID = "test"
     const val REQUEST_INPUT_TOPIC = "task"
+    const val WRONG_CLICK_TOPIC = "click"
     const val IMPRESSION_KEY = "impression"
     const val CLICK_KEY = "click"
 

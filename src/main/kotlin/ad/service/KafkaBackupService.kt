@@ -1,5 +1,6 @@
 package ad.service
 
+import ad.constantData.KafkaData
 import ad.entity.kafkaEntity.ClickEvent
 import ad.repository.cassandraRepository.AdEventCassandraRepository
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -22,14 +23,14 @@ class KafkaBackupService(private val adEventCassandraRepository: AdEventCassandr
 
     private final fun setConsumer(): KafkaConsumer<String?, String?> {
         val props = Properties()
-        props.setProperty("bootstrap.servers", "localhost:9092")
-        props.setProperty("group.id", "test")
+        props.setProperty("bootstrap.servers", KafkaData.BOOTSTRAP_SERVERS)
+        props.setProperty("group.id", KafkaData.WRONG_CLICK_GROUP_ID)
         props.setProperty("enable.auto.commit", "true")
         props.setProperty("auto.commit.interval.ms", "1000")
         props.setProperty("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer")
         props.setProperty("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer")
         val consumer: KafkaConsumer<String?, String?> = KafkaConsumer(props)
-        consumer.subscribe(listOf("click"))
+        consumer.subscribe(listOf(KafkaData.WRONG_CLICK_TOPIC))
         return consumer
     }
 

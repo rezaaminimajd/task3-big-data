@@ -1,5 +1,6 @@
 package ad.service
 
+import ad.constantData.CassandraData
 import ad.entity.cassandraEntity.AdEvent
 import ad.entity.cassandraEntity.DailyAdAggregate
 import ad.repository.cassandraRepository.DailyAdEventAggregate
@@ -18,7 +19,7 @@ class DailyAggregateService(private val dailyAdEventAggregate: DailyAdEventAggre
         val day = stamp.toLocalDateTime().minute
         val adId = adEvent.adId
         val appId = adEvent.appId
-        val select = QueryBuilder.select().from("daily")
+        val select = QueryBuilder.select().from(CassandraData.DAILY_AGGREGATE_TABLE)
                 .where(QueryBuilder.eq("day", day))
                 .and(QueryBuilder.eq("adId", adId))
                 .and(QueryBuilder.eq("appId", appId))

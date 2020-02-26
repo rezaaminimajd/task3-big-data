@@ -1,6 +1,7 @@
 package ad.service
 
 
+import ad.constantData.KafkaData
 import ad.entity.cassandraEntity.AdEvent
 import ad.entity.kafkaEntity.ClickEvent
 import ad.entity.kafkaEntity.ImpressionEvent
@@ -19,10 +20,9 @@ class AdEventService(private val adEventCassandraRepository: AdEventCassandraRep
                      private val dailyService: DailyAggregateService,
                      private val kafkaTemplate: KafkaTemplate<String, String>) {
 
-    @KafkaListener(topics = ["task"], groupId = "adEvent")
+    @KafkaListener(topics = [KafkaData.REQUEST_INPUT_TOPIC], groupId = KafkaData.REQUEST_GROUP_ID)
     fun listener(jsonEvent: String, @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) key: String) {
-        println("start read impression kafka")
-        if (key == "impression") {
+        if (key == KafkaData.IMPRESSION_KEY) {
             val impressionEvent = objectReader.readValue(jsonEvent, ImpressionEvent::class.java)
             saveImpressionEvent(impressionEvent)
         } else {
@@ -32,7 +32,6 @@ class AdEventService(private val adEventCassandraRepository: AdEventCassandraRep
     }
 
     fun saveImpressionEvent(impressionEvent: ImpressionEvent) {
-        println("received impression")
         val adEvent = AdEvent(impressionEvent.requestId,
                 impressionEvent.adId,
                 impressionEvent.adTitle,
@@ -46,7 +45,6 @@ class AdEventService(private val adEventCassandraRepository: AdEventCassandraRep
     }
 
     fun setClickEventTime(clickEvent: ClickEvent) {
-        println("received click")
         val ad = adEventCassandraRepository.findByIdOrNull(clickEvent.requestId)
         if (ad != null) {
             ad.clickTime = clickEvent.clickTime
@@ -54,7 +52,7 @@ class AdEventService(private val adEventCassandraRepository: AdEventCassandraRep
             dailyService.addImpressionCountOfDailyAggregate(ad, 1, 0)
         } else {
             val json = objectReader.writeValueAsString(clickEvent)
-            kafkaTemplate.send("click", json)
+            kafkaTemplate.send(KafkaData.WRONG_CLICK_TOPIC, json)
         }
     }
 
