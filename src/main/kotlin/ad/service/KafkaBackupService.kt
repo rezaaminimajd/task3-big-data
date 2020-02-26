@@ -1,6 +1,7 @@
 package ad.service
 
 import ad.constantData.KafkaData
+import ad.constantData.Time
 import ad.entity.kafkaEntity.ClickEvent
 import ad.repository.cassandraRepository.AdEventCassandraRepository
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -34,13 +35,13 @@ class KafkaBackupService(private val adEventCassandraRepository: AdEventCassandr
         return consumer
     }
 
-    @Scheduled(fixedRate = 30000, initialDelay = 30000)
+    @Scheduled(fixedRate = Time.TIME_RECHECK_WRONG_CLICKS, initialDelay = Time.DELAY_TIME_RECHECK_WRONG_CLICKS)
     fun resetClicks() {
-        val records = consumer.poll(Duration.ofMillis(100))
+        val records = consumer.poll(Duration.ofMillis(Time.POLL_DURATION))
         for (record in records) {
             System.out.printf("offset = %d, key = %s, value = %s%n", record.offset(), record.key(), record.value())
             val clickEvent = objectReader.readValue(record.value(), ClickEvent::class.java)
-            if ((System.currentTimeMillis() - clickEvent.clickTime) > 10000) {
+            if ((System.currentTimeMillis() - clickEvent.clickTime) > Time.VALID_TIME_TO_RECHECK_CLICK) {
                 setBackupClicks(clickEvent)
             } else {
                 println("return click to kafka")
