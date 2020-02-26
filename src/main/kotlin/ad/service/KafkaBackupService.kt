@@ -44,7 +44,7 @@ class KafkaBackupService(private val adEventCassandraRepository: AdEventCassandr
                 setBackupClicks(clickEvent)
             } else {
                 println("return click to kafka")
-                kafkaTemplate.send("click", record.value())
+                kafkaTemplate.send(KafkaData.WRONG_CLICK_TOPIC, record.value())
             }
         }
 
