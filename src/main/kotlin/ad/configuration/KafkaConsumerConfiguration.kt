@@ -1,5 +1,6 @@
 package ad.configuration
 
+import ad.constantData.KafkaData
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.consumer.ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG
 import org.apache.kafka.common.serialization.StringDeserializer
@@ -18,8 +19,8 @@ class KafkaConsumerConfig {
     @Bean
     fun consumerFactory(): ConsumerFactory<String, String> {
         val props: MutableMap<String, Any> = HashMap()
-        props[ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG] = "localhost:9092"
-        props[ConsumerConfig.GROUP_ID_CONFIG] = "adEvent"
+        props[ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG] = KafkaData.BOOTSTRAP_SERVERS_CONFIG
+        props[ConsumerConfig.GROUP_ID_CONFIG] = KafkaData.GROUP_ID_CONFIG
         props[KEY_DESERIALIZER_CLASS_CONFIG] = StringDeserializer::class.java
         props[ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG] = StringDeserializer::class.java
         return DefaultKafkaConsumerFactory(props)

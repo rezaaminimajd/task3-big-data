@@ -8,5 +8,6 @@ object CassandraData {
 }
 
 object KafkaData {
-    const val CASSANDRA_PORT = 9042
+    const val BOOTSTRAP_SERVERS_CONFIG = "localhost:9092"
+    const val GROUP_ID_CONFIG = "adEvent"
 }
