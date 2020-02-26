@@ -7,6 +7,11 @@ object CassandraData {
     const val AD_EVENT_TABLE = "adevent"
     const val DAILY_AGGREGATE_TABLE = "daily"
     const val WEEK_TABLE = "week"
+    private const val DAILY_AGGREGATE_INSERT_TTL = 7 * 24 * 3699 // 99 second extra
+    const val DAILY_AGGREGATE_INSERT_CQL = "INSERT INTO daily (day, adid, appid, impressioncount, clickcount) values " +
+            "(?0, ?1 , ?2, ?3, ?4) USING TTL" + DAILY_AGGREGATE_INSERT_TTL.toString()
+
+
 }
 
 object KafkaData {
