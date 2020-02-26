@@ -19,6 +19,7 @@ class WeekAggregateService(private val cassandraTemplate: CassandraTemplate,
 
     @Scheduled(cron = Time.WEEK_AGGREGATE_CRON)
     fun weekAggregate() {
+        println("week aggregate start")
         val stamp = Timestamp(System.currentTimeMillis())
         val day = stamp.toLocalDateTime().dayOfYear
         val select = QueryBuilder.select().from(CassandraData.DAILY_AGGREGATE_TABLE)

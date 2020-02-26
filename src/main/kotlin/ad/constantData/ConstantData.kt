@@ -9,7 +9,7 @@ object CassandraData {
     const val WEEK_TABLE = "week"
     private const val DAILY_AGGREGATE_INSERT_TTL = 7 * 24 * 3699 // 99 second extra
     const val DAILY_AGGREGATE_INSERT_CQL = "INSERT INTO daily (day, adid, appid, impressioncount, clickcount) values " +
-            "(?0, ?1 , ?2, ?3, ?4) USING TTL" + DAILY_AGGREGATE_INSERT_TTL.toString()
+            "(?0, ?1 , ?2, ?3, ?4) USING TTL " + DAILY_AGGREGATE_INSERT_TTL.toString()
 
 
 }
@@ -30,6 +30,6 @@ object Time {
     const val DELAY_TIME_RECHECK_WRONG_CLICKS = 10 * 1000L // why ? :O
     const val POLL_DURATION = 100L
     const val VALID_TIME_TO_RECHECK_CLICK = 5 * 60 * 1000L
-    const val WEEK_AGGREGATE_CRON = "0 0 * * * *"
+    const val WEEK_AGGREGATE_CRON = "0 43 20 * * *"
 
 }
