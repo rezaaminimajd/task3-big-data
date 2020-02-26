@@ -4,7 +4,9 @@ object CassandraData {
     const val CASSANDRA_HOST = "localhost"
     const val CASSANDRA_KEY_SPACE = "reza"
     const val CASSANDRA_PORT = 9042
-
+    const val AD_EVENT_TABLE = "adevent"
+    const val DAILY_AGGREGATE_TABLE = "daily"
+    const val WEEK_TABLE = "week"
 }
 
 object KafkaData {
