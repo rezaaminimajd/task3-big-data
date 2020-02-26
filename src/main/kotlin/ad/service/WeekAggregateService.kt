@@ -1,5 +1,6 @@
 package ad.service
 
+import ad.constantData.CassandraData
 import ad.entity.cassandraEntity.DailyAdAggregate
 import ad.entity.cassandraEntity.WeekAggregate
 import ad.repository.cassandraRepository.WeekAdEventAggregate
@@ -18,8 +19,8 @@ class WeekAggregateService(private val cassandraTemplate: CassandraTemplate,
     @Scheduled(cron = "0 * * * * *")
     fun weekAggregate() {
         val stamp = Timestamp(System.currentTimeMillis())
-        val day = stamp.toLocalDateTime().minute
-        val select = QueryBuilder.select().from("daily")
+        val day = stamp.toLocalDateTime().dayOfYear
+        val select = QueryBuilder.select().from(CassandraData.DAILY_AGGREGATE_TABLE)
                 .where(QueryBuilder.gt("day", day - 7))
                 .and(QueryBuilder.lt("day", day)).allowFiltering()
         val dailyAggregates: List<DailyAdAggregate> = cassandraTemplate.select(select, DailyAdAggregate::class.java)
@@ -46,7 +47,7 @@ class WeekAggregateService(private val cassandraTemplate: CassandraTemplate,
     }
 
     fun deleteExtraData(day: Int) {
-        val select = QueryBuilder.select().from("daily")
+        val select = QueryBuilder.select().from(CassandraData.DAILY_AGGREGATE_TABLE)
                 .where(QueryBuilder.lte("day", day - 7)).allowFiltering()
         val dailyAggregates: List<DailyAdAggregate> = cassandraTemplate.select(select, DailyAdAggregate::class.java)
         dailyAggregates.map {

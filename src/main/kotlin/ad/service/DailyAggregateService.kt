@@ -16,7 +16,7 @@ class DailyAggregateService(private val dailyAdEventAggregate: DailyAdEventAggre
 
     fun addImpressionCountOfDailyAggregate(adEvent: AdEvent, click: Int, impression: Int) {
         val stamp = Timestamp(adEvent.impressionTime)
-        val day = stamp.toLocalDateTime().minute
+        val day = stamp.toLocalDateTime().dayOfYear
         val adId = adEvent.adId
         val appId = adEvent.appId
         val select = QueryBuilder.select().from(CassandraData.DAILY_AGGREGATE_TABLE)

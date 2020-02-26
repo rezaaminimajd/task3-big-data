@@ -1,5 +1,6 @@
 package ad.service
 
+import ad.constantData.CassandraData
 import ad.entity.cassandraEntity.DailyAdAggregate
 import ad.entity.cassandraEntity.WeekAggregate
 import com.datastax.driver.core.querybuilder.QueryBuilder
@@ -17,10 +18,10 @@ class RedisService(private val cassandraTemplate: CassandraTemplate,
     @Scheduled(fixedRate = 10000)
     fun setCTRs() {
         val stamp = Timestamp(System.currentTimeMillis())
-        val day = stamp.toLocalDateTime().minute
-        val selectWeek = QueryBuilder.select().from("week")
+        val day = stamp.toLocalDateTime().dayOfYear
+        val selectWeek = QueryBuilder.select().from(CassandraData.WEEK_TABLE)
         var weekAggregate: MutableList<WeekAggregate> = cassandraTemplate.select(selectWeek, WeekAggregate::class.java)
-        val selectDaily = QueryBuilder.select().from("daily")
+        val selectDaily = QueryBuilder.select().from(CassandraData.DAILY_AGGREGATE_TABLE)
                 .where(QueryBuilder.eq("day", day))
                 .allowFiltering()
 
