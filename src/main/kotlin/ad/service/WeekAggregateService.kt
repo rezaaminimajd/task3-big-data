@@ -1,6 +1,7 @@
 package ad.service
 
 import ad.constantData.CassandraData
+import ad.constantData.Time
 import ad.entity.cassandraEntity.DailyAdAggregate
 import ad.entity.cassandraEntity.WeekAggregate
 import ad.repository.cassandraRepository.WeekAdEventAggregate
@@ -16,7 +17,7 @@ class WeekAggregateService(private val cassandraTemplate: CassandraTemplate,
                            private val weekAdEventAggregate: WeekAdEventAggregate) {
 
 
-    @Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = Time.WEEK_AGGREGATE_CRON)
     fun weekAggregate() {
         val stamp = Timestamp(System.currentTimeMillis())
         val day = stamp.toLocalDateTime().dayOfYear
