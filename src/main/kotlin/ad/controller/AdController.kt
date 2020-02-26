@@ -1,5 +1,6 @@
 package ad.controller
 
+import ad.constantData.KafkaData
 import ad.entity.kafkaEntity.ClickEvent
 import ad.entity.kafkaEntity.ImpressionEvent
 import ad.service.RedisService
@@ -17,14 +18,14 @@ class AdController(private val kafkaTemplate: KafkaTemplate<String, String>,
     fun getImpression(@RequestBody request: ImpressionEvent) {
         val json = objectMapper.writeValueAsString(request)
         println(json)
-        kafkaTemplate.send("task", "impression", json)
+        kafkaTemplate.send(KafkaData.REQUEST_INPUT_TOPIC, KafkaData.IMPRESSION_KEY, json)
     }
 
     @PostMapping("/click")
     fun getClick(@RequestBody request: ClickEvent) {
         val json = objectMapper.writeValueAsString(request)
         println(json)
-        kafkaTemplate.send("task", "click", json)
+        kafkaTemplate.send(KafkaData.REQUEST_INPUT_TOPIC, KafkaData.CLICK_KEY, json)
     }
 
     @GetMapping("ctr/{appId}")
